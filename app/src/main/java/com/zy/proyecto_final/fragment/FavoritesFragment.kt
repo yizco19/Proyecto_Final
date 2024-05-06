@@ -77,7 +77,8 @@ class FavoritesFragment : Fragment() {
                 this.delete_click?.let { it(position,item) }
                 Toast.makeText(context, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
                 //notify data change
-                (view?.findViewById<RecyclerView>(R.id.listado)!!.adapter as FavoriteRecyclerViewAdapter).notifyDataSetChanged()
+                (view?.findViewById<RecyclerView>(R.id.listado)!!.adapter as FavoriteRecyclerViewAdapter).notifyItemRemoved(position)
+
             }
         }
 

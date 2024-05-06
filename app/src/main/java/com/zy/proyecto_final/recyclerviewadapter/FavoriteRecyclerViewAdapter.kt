@@ -61,4 +61,5 @@ class FavoriteRecyclerViewAdapter(
             return super.toString() + " '" + contentView.text + "'"
         }
     }
+
 }
