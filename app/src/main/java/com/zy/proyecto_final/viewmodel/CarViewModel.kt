@@ -33,21 +33,19 @@ class CarViewModel: ViewModel() {
     }
 
     fun add() {
-        if(this.selectedcar.id == null){
-            val existingCar = _items.value?.find { it.product_id == selectedcar.product_id }
-            if (existingCar != null) {
-                existingCar.product_count += 1
-            }else{
-                this._items.value?.add(this.selectedcar)
-                itemsrepository.add(this.selectedcar)
-                var t= this.selectedcar
-            }
-
-            this.updateAll()
-
+        val existingCar = _items.value?.find { it.product_id == selectedcar.product_id }
+        if (existingCar != null) {
+            // El producto ya existe en el carrito, así que incrementamos la cantidad
+            existingCar.product_count += 1
+            updateAll()
+        } else {
+            // El producto no existe en el carrito, así que lo agregamos
+            _items.value?.add(selectedcar)
+            itemsrepository.add(selectedcar)
+            updateAll()
         }
-        itemsrepository.add(this.selectedcar)
     }
+
     fun getAll():MutableList<Car>{
         return this.itemsrepository.getAll(selectedcar.user_id)
     }
