@@ -22,6 +22,25 @@
                 app:titleTextColor="@color/white"
                 app:title="Home" />
             <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardBackgroundColor="@color/lavender"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                app:cardElevation="20dp"
+                app:cardCornerRadius="5dp">
+            <com.denzcoskun.imageslider.ImageSlider
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/imageSlider"
+                app:iss_period="1000"
+                app:iss_auto_cycle="true"
+                app:iss_delay="1000"
+                app:iss_corner_radius="20"
+                app:iss_title_background="@drawable/default_gradient"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
