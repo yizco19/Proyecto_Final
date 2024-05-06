@@ -37,10 +37,14 @@ class FavoriteViewModel : ViewModel() {
     }
 
     fun add() {
-        itemsrepository.add(selectedfavorite)
-        this._items.value = this.itemsrepository.getAll()
-
+        val existingFavorite = _items.value?.find { it.product_id == selectedfavorite.product_id }
+        if (existingFavorite == null) {
+            // El producto no existe en la lista de favoritos, así que lo agregamos
+            itemsrepository.add(selectedfavorite)
+            _items.value = itemsrepository.getAll()
+        }
     }
+
 
     private fun update() {
         var values = this._items.value
