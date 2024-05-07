@@ -1,6 +1,7 @@
 package com.zy.proyecto_final.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,18 +9,18 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.lifecycle.viewModelScope
 import com.zy.proyecto_final.R
 import com.zy.proyecto_final.activity.LoginActivity
-import com.zy.proyecto_final.activity.UpdatePwdActivity
-import com.zy.proyecto_final.pojo.Time
+import com.zy.proyecto_final.fragments.OrdersFragment
 import com.zy.proyecto_final.viewmodel.TimeViewModel
 import com.zy.proyecto_final.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -42,8 +43,8 @@ class MineFragment : Fragment() {
         // Iniciar la actualización periódica
         //handler.postDelayed(updateTimeRunnable, delay)
 
-        date = view?.findViewById<TextView>(R.id.date)!!
-        time = view?.findViewById<TextView>(R.id.time)!!
+        //date = view?.findViewById<TextView>(R.id.date)!!
+        //time = view?.findViewById<TextView>(R.id.time)!!
         //updateTimeRunnable.run()
         view?.findViewById<TextView>(R.id.logout) !!.setOnClickListener {
             viewModel.viewModelScope.launch {
@@ -53,14 +54,40 @@ class MineFragment : Fragment() {
 
             }
         }
-        view?.findViewById<RelativeLayout>(R.id.updatePwd) !!.setOnClickListener {
-                var intent= Intent(context, UpdatePwdActivity::class.java)
-            intent.putExtra("user_id",viewModel.userlogged.id)
-                startActivityForResult(intent,1000)
+
+        view?.findViewById<LinearLayoutCompat>(R.id.wallet)!!.setOnClickListener {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_redemption, null)
+            val editTextRedeemCode = dialogView.findViewById<EditText>(R.id.editTextRedeemCode)
+
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.apply {
+                setTitle("Redimir código")
+                setView(dialogView)
+                setPositiveButton("Aceptar") { dialog, _ ->
+                    val redeemCode = editTextRedeemCode.text.toString()
+                    // Aquí puedes hacer lo que quieras con el código de redención ingresado
+                    // Por ejemplo, enviarlo a un servidor para su validación o procesamiento
+                    // Si deseas mostrar un mensaje de confirmación, puedes hacerlo aquí
+                }
+                setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            }
+
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
         }
-        view?.findViewById<RelativeLayout>(R.id.user_info) !!.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fragmentContainerView, UserDetailsFragment())?.commit()
+        val orderStatusMap = mapOf(
+            R.id.orderAll to "all",
+            R.id.history to "history",
+            R.id.pending to "pending",
+            R.id.shipping to "shipping"
+        )
+
+        for ((viewId, orderStatus) in orderStatusMap) {
+            view?.findViewById<LinearLayoutCompat>(viewId)?.setOnClickListener {
+                openOrder(orderStatus)
+            }
         }
 
         val profileImage = view.findViewById<ImageView>(R.id.image)
@@ -74,17 +101,26 @@ class MineFragment : Fragment() {
         }
         return view
     }
-/*
-    val updateTimeRunnable = object : Runnable {
-        override fun run() {
-            val timeCurrent: Time = timeViewModel.getTime()
-            date!!.text = timeCurrent.date
-            time!!.text = timeCurrent.time + ":" + timeCurrent.seconds
 
-            // Programar la ejecución del Runnable nuevamente después del intervalo de tiempo
-            handler.postDelayed(this, delay)
+    private fun openOrder(orderStatus: String) {
+        var fm: FragmentManager = parentFragmentManager
+        var f = fm.fragments
+        fm.commit {
+            replace(R.id.fragmentContainerView, OrdersFragment.newInstance(orderStatus))
+
         }
-    }*/
+    }
+    /*
+        val updateTimeRunnable = object : Runnable {
+            override fun run() {
+                val timeCurrent: Time = timeViewModel.getTime()
+                date!!.text = timeCurrent.date
+                time!!.text = timeCurrent.time + ":" + timeCurrent.seconds
+
+                // Programar la ejecución del Runnable nuevamente después del intervalo de tiempo
+                handler.postDelayed(this, delay)
+            }
+        }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
