@@ -40,11 +40,11 @@ class MineFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_mine, container, false)
         view?.findViewById<TextView>(R.id.username) !!.text = viewModel.userlogged.username
         // Iniciar la actualización periódica
-        handler.postDelayed(updateTimeRunnable, delay)
+        //handler.postDelayed(updateTimeRunnable, delay)
 
         date = view?.findViewById<TextView>(R.id.date)!!
         time = view?.findViewById<TextView>(R.id.time)!!
-        updateTimeRunnable.run()
+        //updateTimeRunnable.run()
         view?.findViewById<TextView>(R.id.logout) !!.setOnClickListener {
             viewModel.viewModelScope.launch {
                 viewModel.logout()
@@ -74,7 +74,7 @@ class MineFragment : Fragment() {
         }
         return view
     }
-
+/*
     val updateTimeRunnable = object : Runnable {
         override fun run() {
             val timeCurrent: Time = timeViewModel.getTime()
@@ -84,7 +84,7 @@ class MineFragment : Fragment() {
             // Programar la ejecución del Runnable nuevamente después del intervalo de tiempo
             handler.postDelayed(this, delay)
         }
-    }
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
