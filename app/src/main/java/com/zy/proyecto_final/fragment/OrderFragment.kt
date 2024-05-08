@@ -48,6 +48,14 @@ class OrderFragment : Fragment() {
                     it.toMutableList(), productviewmodel
                 )
             }
+        binding.editAddress.setOnClickListener {
+            // abrir ventana de editar
+            Toast.makeText(context, "Editar", Toast.LENGTH_SHORT).show()
+        }
+        binding.editPayment.setOnClickListener {
+            // abrir ventana de editar
+            Toast.makeText(context, "Editar", Toast.LENGTH_SHORT).show()
+        }
 
         binding.buy.setOnClickListener {
             Toast.makeText(context, "Comprado", Toast.LENGTH_SHORT).show()

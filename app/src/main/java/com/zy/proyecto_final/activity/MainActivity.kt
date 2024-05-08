@@ -24,6 +24,11 @@ import com.zy.proyecto_final.viewmodel.OrderViewModel
 import com.zy.proyecto_final.viewmodel.ProductViewModel
 import com.zy.proyecto_final.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import com.zy.proyecto_final.MyBackgroundService
 
 class MainActivity : AppCompatActivity() {
     lateinit var mBottomNav: BottomNavigationView
@@ -46,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         this.orderviewmodel.init(this)
         this.userviewmodel.init(this)
         this.favoriteviewmodel.init(this)
+        // Inicia el servicio para ejecución periódica
+        scheduleService(this)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //asigna userlogged
         settings = getSharedPreferences("user", MODE_PRIVATE)
@@ -168,5 +175,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    fun scheduleService(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, MyBackgroundService::class.java)
+        val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
 
+        // Programa el servicio para que se ejecute cada 1 hora (en milisegundos)
+        val intervalMillis: Long =   20 * 60 * 1000 // 20 minutos
+        val triggerAtMillis = System.currentTimeMillis()
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            intervalMillis,
+            pendingIntent
+        )
+    }
 }
