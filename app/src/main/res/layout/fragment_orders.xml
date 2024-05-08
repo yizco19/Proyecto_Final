@@ -24,7 +24,7 @@
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_gravity="center"
-                android:id="@+id/recyclerView_order"
+                android:id="@+id/listado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
