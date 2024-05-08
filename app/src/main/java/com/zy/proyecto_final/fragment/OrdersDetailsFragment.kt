@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zy.proyecto_final.R
 import com.zy.proyecto_final.databinding.FragmentOrderDetailsBinding
 import com.zy.proyecto_final.fragments.ProductsFragment
+import com.zy.proyecto_final.recyclerviewadapter.OrderDataRecyclerViewAdapter
 import com.zy.proyecto_final.recyclerviewadapter.OrdersRecyclerViewAdapter
 import com.zy.proyecto_final.viewmodel.OrderViewModel
 import com.zy.proyecto_final.viewmodel.UserViewModel
@@ -52,7 +53,7 @@ class OrdersDetailsFragment : Fragment() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.listado)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         this.viewmodel.items.value?.let {
-            recyclerView?.adapter = OrdersRecyclerViewAdapter(it.toMutableList())
+            recyclerView?.adapter = OrderDataRecyclerViewAdapter(it.toMutableList())
         }
         
         
